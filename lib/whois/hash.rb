@@ -14,10 +14,10 @@ module Whois
 
       r = parser
       unless r.registered?
-        return res.merge({ :available? => r.available?, :registered? => r.registered? })
+        return { :available? => r.available?, :registered? => r.registered? }.merge(res)
       end
 
-      props = Hash[
+      Hash[
         PROPS.map { |key|
           begin
             v = r.__send__(key)
@@ -38,9 +38,7 @@ module Whois
 
           [ key, val ]
         }.select { |item| !item[1].nil? || MANDATORY_PROPS[item[0]] }
-      ]
-
-      res.merge(props)
+      ].merge(res)
     end
   end
 end
